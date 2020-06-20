@@ -28,6 +28,11 @@
     parent.classList.add("ml-2");
     parent.innerHTML = json[i].name;
     if (json[i].children.length > 0) {
+      let triangle = document.createElement("span");
+      // triangle.innerHTML = "▼":
+      triangle.innerHTML = "►";
+      triangle.classList.add("mr-1")
+      listElement.appendChild(triangle);
       for (let j = 0; j < json[i].children.length; ++j) {
         let listElement2 = document.createElement("div");
         let child = document.createElement("span");
