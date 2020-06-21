@@ -2,7 +2,6 @@
   const res = await fetch("dummy-data.json");
   const json = await res.json();
   console.log("Object", json);
-  // document.querySelector('div#data').innerHTML = JSON.stringify(json);
   let data = document.getElementById("data");
   let listDiv = document.createElement("div");
   let imgDiv = document.createElement("div");
@@ -25,17 +24,18 @@
     box.classList.add("rounded-sm");
     box.classList.add("bg-white");
     box.style.height = "14px";
+    box.style.cursor = "default";
     box.setAttribute("id", json[i].id);
-    box.setAttribute("onclick", "clickBox(this.id)");
     parent.classList.add("ml-2");
     parent.setAttribute("id", json[i].id + "parent");
     parent.innerHTML = json[i].name;
     if (json[i].children.length > 0) {
       let triangle = document.createElement("span");
       triangle.setAttribute("id", json[i].id + "triangle");
-      // triangle.innerHTML = "▼":
+      triangle.setAttribute("onclick", "clickTriangle(this.id)");
       triangle.innerHTML = "►";
       triangle.classList.add("mr-1");
+      triangle.style.cursor = "pointer";
       listElement.appendChild(triangle);
       for (let j = 0; j < json[i].children.length; ++j) {
         let listElement2 = document.createElement("div");
@@ -78,10 +78,13 @@
   data.appendChild(imgDiv);
 })();
 
-function clickBox(id) {
-  let selectedBox = document.getElementById(id);
-  let selectTriangle = document.getElementById(id + "triangle");
-  let clickedElement = document.getElementById(id + "parent").childNodes;
+function clickTriangle(id) {
+  let selectedBox = document.getElementById(id).parentElement.childNodes[1];
+  let selectTriangle = document.getElementById(id);
+  let clickedElement = document.getElementById(id).parentElement.childNodes[2]
+    .childNodes;
+  let imageElement = document.getElementById("ImageElement");
+  console.log(clickedElement);
 
   if (clickedElement.length > 1) {
     for (let i = 1; i < clickedElement.length; ++i) {
@@ -93,8 +96,9 @@ function clickBox(id) {
       } else {
         clickedElement[i].style.display = "none";
         selectTriangle.innerHTML = "►";
-        selectedBox.classList.remove("bg-warning"); 
+        selectedBox.classList.remove("bg-warning");
         selectedBox.classList.add("bg-white");
+        imageElement.src = "";
       }
     }
   }
@@ -103,7 +107,8 @@ function clickBox(id) {
 function selectImage(id) {
   let imageElement = document.getElementById("ImageElement");
   let imageSource = document.getElementById(id + "img").innerText;
-  let selectedBox = document.getElementById(id).parentElement.parentElement.childNodes;
+  let selectedBox = document.getElementById(id).parentElement.parentElement
+    .childNodes;
   imageElement.src = imageSource;
   for (let i = 1; i < selectedBox.length; ++i) {
     if (selectedBox[i].childNodes[0].id === id) {
