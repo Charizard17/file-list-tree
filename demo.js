@@ -61,6 +61,8 @@
         parent.appendChild(listElement2);
         listElement2.style.display = "none";
       }
+    } else {
+      box.setAttribute("onclick", "selectPrivat()");
     }
     listElement.appendChild(box);
     listElement.appendChild(parent);
@@ -87,11 +89,11 @@ function clickBox(id) {
         clickedElement[i].style.display = "";
         selectTriangle.innerHTML = "▼";
         selectedBox.classList.remove("bg-white");
-        selectedBox.classList.add("bg-success");
+        selectedBox.classList.add("bg-warning");
       } else {
         clickedElement[i].style.display = "none";
         selectTriangle.innerHTML = "►";
-        selectedBox.classList.remove("bg-success");
+        selectedBox.classList.remove("bg-warning"); 
         selectedBox.classList.add("bg-white");
       }
     }
@@ -99,8 +101,20 @@ function clickBox(id) {
 }
 
 function selectImage(id) {
-  let imageSource = document.getElementById(id + "img").innerText;
   let imageElement = document.getElementById("ImageElement");
+  let imageSource = document.getElementById(id + "img").innerText;
+  let selectedBox = document.getElementById(id).parentElement.parentElement.childNodes;
   imageElement.src = imageSource;
+  for (let i = 1; i < selectedBox.length; ++i) {
+    if (selectedBox[i].childNodes[0].id === id) {
+      selectedBox[i].childNodes[0].classList.add("bg-success");
+    } else {
+      selectedBox[i].childNodes[0].classList.remove("bg-success");
+    }
+  }
+}
 
+function selectPrivat() {
+  let imageElement = document.getElementById("ImageElement");
+  imageElement.src = "";
 }
