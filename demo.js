@@ -22,16 +22,19 @@
     let parent = document.createElement("span");
     box.classList.add("border");
     box.classList.add("border-secondary");
-    box.classList.add("rounded-sm")
+    box.classList.add("rounded-sm");
     box.classList.add("bg-white");
     box.style.height = "14px";
+    box.setAttribute("id", json[i].id);
+    box.setAttribute("onclick", "clickBox(this.id)");
     parent.classList.add("ml-2");
+    parent.setAttribute("id", json[i].id + "child");
     parent.innerHTML = json[i].name;
     if (json[i].children.length > 0) {
       let triangle = document.createElement("span");
       // triangle.innerHTML = "▼":
       triangle.innerHTML = "►";
-      triangle.classList.add("mr-1")
+      triangle.classList.add("mr-1");
       listElement.appendChild(triangle);
       for (let j = 0; j < json[i].children.length; ++j) {
         let listElement2 = document.createElement("div");
@@ -39,11 +42,13 @@
         let box2 = document.createElement("button");
         box2.classList.add("border");
         box2.classList.add("border-secondary");
-        box2.classList.add("rounded-sm")
+        box2.classList.add("rounded-sm");
         box2.classList.add("bg-white");
         box2.style.height = "14px";
         box2.classList.add("ml-5");
+        box2.setAttribute("id", json[i].children[j].id);
         child.classList.add("ml-2");
+        listElement2.style.display = "none";
         child.innerHTML = json[i].children[j].name;
         listElement2.appendChild(box2);
         listElement2.appendChild(child);
@@ -64,3 +69,22 @@
   data.appendChild(listDiv);
   data.appendChild(imgDiv);
 })();
+
+function clickBox(id) {
+  var selectedBox = document.getElementById(id);
+  console.log(selectedBox);
+  var clickedElement = document.getElementById(id + "child").childNodes;
+  console.log(clickedElement);
+
+  if (clickedElement.length > 1) {
+    for (var i = 1; i < clickedElement.length; ++i) {
+      if (clickedElement[i].style.display === "none") {
+        clickedElement[i].style.display = "";
+        selectedBox.classList.add("bg-info");
+      } else {
+        clickedElement[i].style.display = "none";
+        selectedBox.classList.add("bg-white");
+      }
+    }
+  }
+}
